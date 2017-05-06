@@ -1,17 +1,23 @@
 package actions;
 
-import ui.PaintPanel;
-
 import java.lang.reflect.Method;
 
 import javax.swing.JOptionPane;
 
+import actions.global.ActionName;
+import actions.global.GlobalPaintActionExecuter;
+import actions.global.globalactions.AddInstanceMethodGlobalAction;
 import actions.menu.ActionsMenuBarTitles;
-import paintcomponents.java.lazy.ClassPaintComponent;
 import paintcomponents.java.interactive.InstanceOperationComponent;
-import paintcomponents.java.lazy.MethodPaintComponent;
+import ui.PaintPanel;
 
-public class AddInstanceMethodAction extends PaintAction {
+/**
+ * These two are instance methods (Together not seperate) for operation.
+ * 
+ * @author chenzb
+ *
+ */
+public class AddInstanceMethodAction extends MenuBarPaintAction {
 
 	public AddInstanceMethodAction(PaintPanel panel) {
 		super(panel);
@@ -40,8 +46,12 @@ public class AddInstanceMethodAction extends PaintAction {
 				.parseInt(JOptionPane.showInputDialog(
 						"Please enter the index of the constructor you would like to use: \n\n\n"
 								+ getMethodsSelectionUI(methods)));
-		insComp.addMethodPaintComponent(methods[desiaredConstructorIndex], panel);
-		panel.repaint();
+		AddInstanceMethodGlobalAction assiciatedAction = 
+				(AddInstanceMethodGlobalAction) ActionName.ADD_INSTANCE_METHOD_ACTION
+				.getAssiciatedAction();
+		assiciatedAction.setInsComp(insComp);
+		assiciatedAction.setMethodToSet(methods[desiaredConstructorIndex]);
+		GlobalPaintActionExecuter.getSharedInstance().execute(assiciatedAction, panel);
 	}
 
 	@Override
